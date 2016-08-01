@@ -1,28 +1,30 @@
 package com.example.didi.myapplication;
 
 import android.content.Context;
+import android.os.Handler;
 import android.text.Layout;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * Created by didi on 16/7/30.
+ * 测试布局
  */
 public class BtsTestLayout extends LinearLayout {
+    Handler handler = new Handler();
+
     TextView tv1;
     TextView tv2;
 
+    boolean isTextChanged = false;
+
     public BtsTestLayout(Context context) {
-        super(context);
-        initView();
+        this(context, null);
     }
 
     public BtsTestLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initView();
+        this(context, attrs, 0);
     }
 
     public BtsTestLayout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -36,40 +38,13 @@ public class BtsTestLayout extends LinearLayout {
         tv2 = (TextView) findViewById(R.id.end);
     }
 
-    boolean isTextChanged = false;
-
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        if( isTextChanged){
-            int count1 = 0, count2 = 0;
-            Layout l1 = tv1.getLayout();
-            if (l1 != null && l1.getLineCount() > 0) {
-                count1 = l1.getEllipsisCount(0);
-            }
-            Layout l2 = tv2.getLayout();
-            if (l2 != null && l2.getLineCount() > 0) {
-                count2 = l2.getEllipsisCount(0);
-            }
 
-            Log.e("wqw", "count1="+count1+"; count2="+count2);
-            if (count1 > 0 && count2 <= 0) {
-
-                LayoutParams lp = (LayoutParams) tv2.getLayoutParams();
-                lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                lp.weight = 0;
-                tv2.setLayoutParams(lp);
-                invalidate();
-
-            } else if (count1 <= 0 && count2 > 0) {
-                LayoutParams lp = (LayoutParams) tv1.getLayoutParams();
-                lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                lp.weight = 0;
-                tv1.setLayoutParams(lp);
-                invalidate();
-            }
-
-            isTextChanged= false;
+        if (isTextChanged) {
+            isTextChanged = false;
+            updateLayout();
         }
     }
 
@@ -88,6 +63,45 @@ public class BtsTestLayout extends LinearLayout {
         tv2.setText(end);
 
         isTextChanged = true;
-        invalidate();
+        requestLayout();
     }
+
+    private void updateLayout() {
+        int count1 = 0, count2 = 0;
+        Layout l1 = tv1.getLayout();
+        if (l1 != null && l1.getLineCount() > 0) {
+            count1 = l1.getEllipsisCount(0);
+        }
+
+        Layout l2 = tv2.getLayout();
+        if (l2 != null && l2.getLineCount() > 0) {
+            count2 = l2.getEllipsisCount(0);
+        }
+
+        if (count1 > 0 && count2 <= 0) {
+            handler.post(mUpdateTv2Runnable);
+        } else if (count1 <= 0 && count2 > 0) {
+            handler.post(mUpdateTv1Runnable);
+        }
+    }
+
+    private Runnable mUpdateTv1Runnable = new Runnable() {
+        @Override
+        public void run() {
+            LayoutParams lp = (LayoutParams) tv1.getLayoutParams();
+            lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            lp.weight = 0;
+            tv1.setLayoutParams(lp);
+        }
+    };
+
+    private Runnable mUpdateTv2Runnable = new Runnable() {
+        @Override
+        public void run() {
+            LayoutParams lp = (LayoutParams) tv2.getLayoutParams();
+            lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            lp.weight = 0;
+            tv2.setLayoutParams(lp);
+        }
+    };
 }
