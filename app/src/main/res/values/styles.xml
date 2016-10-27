@@ -8,4 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="BtsPassengerPublishStyle">
+
+
+    </style>
+
+    <style name="BtsBaseTheme" parent="Theme.AppCompat" />
+
+    <style name="BtsTheme" parent="BtsBaseTheme" />
+
+    <style name="BtsTheme.NoTitle" parent="BtsTheme">
+    </style>
+
 </resources>
