@@ -2,7 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.didi.myapplication">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> <!--获取当前wifi状态 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -26,6 +31,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AActivity" />
+        <activity android:name=".MapUriSchemeTestActivity" />
         <activity android:name=".BActivity"
             android:theme="@style/BtsTheme.NoTitle"/>
         <activity android:name=".CActivity" />

@@ -1,42 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.didi.myapplication.MainActivity">
+<com.jakewharton.scalpel.ScalpelFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                            xmlns:tools="http://schemas.android.com/tools"
+                                            android:id="@+id/scalpel_layout"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/test_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="22dp"
-        android:gravity="left"
-        android:text="你噶事大嘎达搜嘎速度噶啥等噶速度噶啥等噶收[猜你要去]" />
+    <RelativeLayout
 
-    <TextView
-        android:id="@+id/test_tv_2"
         android:layout_width="match_parent"
-        android:layout_below="@id/test_tv"
-        android:paddingLeft="22dp"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="你噶事大嘎达搜嘎速度噶啥等噶速度噶啥等噶收[猜你要去]" />
-    <TextView
-        android:id="@+id/test_tv_3"
-        android:layout_width="match_parent"
-        android:paddingRight="22dp"
-        android:layout_below="@id/test_tv_2"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="你噶事大嘎达搜嘎速度噶啥等噶速度噶啥等噶收[猜你要去]" />
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.example.didi.myapplication.MainActivity">
 
-    <com.example.didi.myapplication.BtsTestLayout
-        android:id="@+id/operation_container"
-        android:layout_alignParentBottom="true"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
-</RelativeLayout>
+        <TextView
+            android:id="@+id/test_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingLeft="22dp"
+            android:text="你噶事大嘎达搜嘎速度噶啥等噶速度噶啥等噶收[猜你要去]"/>
+
+        <TextView
+            android:id="@+id/test_tv_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/test_tv"
+            android:gravity="left"
+            android:paddingLeft="22dp"
+            android:text="你噶事大嘎达搜嘎速度噶啥等噶速度噶啥等噶收[猜你要去]"/>
+
+        <TextView
+            android:id="@+id/test_tv_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/test_tv_2"
+            android:gravity="left"
+            android:paddingRight="22dp"
+            android:text="你噶事大嘎达搜嘎速度噶啥等噶速度噶啥等噶收[猜你要去]"/>
+
+        <com.example.didi.myapplication.BtsTestLayout
+            android:id="@+id/operation_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+</com.jakewharton.scalpel.ScalpelFrameLayout>

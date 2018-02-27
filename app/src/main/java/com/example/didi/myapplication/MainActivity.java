@@ -1,18 +1,27 @@
 package com.example.didi.myapplication;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.text.Selection;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SynthesizerListener;
+import com.jakewharton.scalpel.ScalpelFrameLayout;
+
+import java.lang.reflect.Proxy;
+
+public class MainActivity extends AppCompatActivity{
 
     String postfix = "[猜你要去]";
     String[] strArray = new String[]{"你好",
@@ -26,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
             "你大嘎达搜嘎速度噶啥等噶速度噶啥等噶的是是是收",
             "你大嘎达搜嘎速度噶啥等噶速度噶啥等的的的的的噶收",
             "你大嘎达搜大大噶啥等噶嘎速度噶啥等噶速度噶啥等噶收到嘎大概大噶啥等噶"};
+
     int i = 1;
 
     int j = 0;
@@ -38,10 +48,27 @@ public class MainActivity extends AppCompatActivity {
 
     BtsTestLayout btl;
 
+    String[] ttsArray = new String[]{
+            "为什么美国的零售价30块美金的衬衣就很好?",
+            "我认为我找到了中国制造业最难的问题，其实是整个中国社会效率低下。",
+            "因为效率低下之后，我们为了把东西卖出去，我们花在市场，花在营销，花在渠道，花在店面，花在促销上的钱实在太多了。",
+
+            "所以我们整个制造业和品牌厂商就拼命压缩成本，原材料成本，制造过程中能不能减少工序，努力把产品成本做到最低。",
+            "衬衣怎么减材料?挺简单的，你把衬衣做的短一点就可以了，把袖子做的短一点，大家别笑，我们国产的绝大部分衬衣，出去你挤地铁，手伸起来一抓手就露出来了。",
+            "这样抠成本就导致产品和设计都有问题。",
+            "美国为什么三四十块钱的衬衣就没有问题?是因为美国这个社会的效率比我们高很多。",
+            "基于这一点我认为我找到了让中国制造业转型升级的秘诀，就是全方位的改善效率，能不能把钱，把绝大部分的钱花在产品本身上，而不是找一百万人像卖保险一样卖产品，或者卖保健品一样卖产品，这不是常态。",
+    };
+
+    int ttsIndex = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        toast = Toast.makeText(this, "确定退出？", Toast.LENGTH_SHORT);
+        new Abc().funcA();
 
         final TextView tv = (TextView) findViewById(R.id.test_tv);
         tv.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 //                intent.setData(uri);
 //                startActivity(intent);
 
-                Intent intent = new Intent(MainActivity.this, ImageScaleActivity.class);
+                Intent intent = new Intent(MainActivity.this, MapUriSchemeTestActivity.class);
                 startActivity(intent);
             }
         });
@@ -73,15 +100,56 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        final Handler h = new Handler();
-        final Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                updateOperation();
-                h.postDelayed(this, 5000);
-            }
-        };
-        h.postDelayed(r, 5000);
+//        final Handler h = new Handler();
+//        final Runnable r = new Runnable() {
+//            @Override
+//            public void run() {
+//                updateOperation();
+//                h.postDelayed(this, 5000);
+//            }
+//        };
+//        h.postDelayed(r, 5000);
+
+        //Log.e("HandlerTest", "post delay execute");
+//        for (int i = 0; i < 100; ++i) {
+//            final int tag = i;
+//            final Runnable r1 = new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        Thread.sleep(100);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    Log.i("HandlerTest", "post x " + tag);
+//                }
+//            };
+//            h.post(r1);
+//        }
+//
+//        h.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.e("HandlerTest", "post delay");
+//            }
+//        }, 1000);
+
+
+//        for (int i = 0; i < 100; ++i) {
+//            final int tag = i;
+//            final Runnable r1 = new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        Thread.sleep(100);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    Log.i("HandlerTest", "post y " + tag);
+//                }
+//            };
+//            h.post(r1);
+//        }
 
         TestEnum te = TestEnum.ERROR;
         te.toString();
@@ -95,6 +163,62 @@ public class MainActivity extends AppCompatActivity {
         BtsTraceLog
                 .add("key1")
                 .report();
+
+        startPlayTts();
+
+        ScalpelFrameLayout layout = (ScalpelFrameLayout) findViewById(R.id.scalpel_layout);
+        layout.setLayerInteractionEnabled(false);
+
+        startActivity(new Intent(this, AActivity.class));
+    }
+
+    private void startPlayTts() {
+        BtsTtsPlayer.setTtsListener(new SynthesizerListener() {
+            @Override
+            public void onSpeakBegin() {
+
+            }
+
+            @Override
+            public void onBufferProgress(int i, int i1, int i2, String s) {
+
+            }
+
+            @Override
+            public void onSpeakPaused() {
+
+            }
+
+            @Override
+            public void onSpeakResumed() {
+
+            }
+
+            @Override
+            public void onSpeakProgress(int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onCompleted(SpeechError speechError) {
+                if (ttsIndex >= ttsArray.length) {
+                    return;
+                }
+                playTts();
+                //BtsTtsPlayer.playTts(MainActivity.this, ttsArray[ttsIndex++]);
+            }
+
+            @Override
+            public void onEvent(int i, int i1, int i2, Bundle bundle) {
+
+            }
+        });
+        playTts();
+    }
+
+    private void playTts() {
+        //BtsTtsPlayer.playTts(this, ttsArray[ttsIndex++]);
+
     }
 
     private void show() {
@@ -229,12 +353,43 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.e("wqw", "MainActivity onDestroy");
+        System.exit(0);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.e("wqw", "MainActivity onRestart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.e("wqw", "MainActivity onResume");
+        System.gc();
+
+        MyDialogFragment df = new MyDialogFragment();
+        df.setCancelable(true);
+        df.show(getSupportFragmentManager(), "dgdad");
+    }
+
+    public static class MyDialogFragment extends DialogFragment {
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            LinearLayout ll = new LinearLayout(inflater.getContext());
+            TextView tv = new TextView(inflater.getContext());
+            tv.setText("测试对话框");
+            ll.addView(tv);
+            getDialog().setCanceledOnTouchOutside(false);
+            return ll;
+        }
+
+        @Override
+        public void onCancel(DialogInterface dialog) {
+            super.onCancel(dialog);
+            Toast.makeText(getContext(), "取消被回掉了", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -247,5 +402,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.e("wqw", "MainActivity onPause");
+    }
+
+    private Toast toast;
+
+    @Override
+    public void onBackPressed() {
+        ///super.onBackPressed();
+        if (null == toast.getView().getParent()) {
+            toast.show();
+        } else {
+            System.exit(0);
+        }
     }
 }

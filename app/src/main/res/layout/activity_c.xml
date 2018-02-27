@@ -12,8 +12,78 @@
 
     <TextView
         android:id="@+id/txt_in_c"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="activity C" />
+        android:textSize="30dp"
+        android:text="activity C啊嘎嘎十多个哦啊及输卵管那算了的叫法是两个 " />
+
+    <TextView
+        android:id="@+id/txt_in_a"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_in_c"
+        android:includeFontPadding="true"
+        android:textSize="30dp"
+        android:text="啊嘎嘎" />
+
+    <TextView
+        android:id="@+id/txt_in_f"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_in_a"
+        android:textSize="30dp"
+        android:includeFontPadding="true"
+        android:text="啊嘎嘎" />
+
+    <TextView
+        android:id="@+id/txt_in_h"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_in_f"
+        android:textSize="30dp"
+        android:includeFontPadding="true"
+        android:text="啊嘎嘎" />
+
+    <TextView
+        android:id="@+id/txt_in_b"
+        android:layout_toRightOf="@+id/txt_in_c"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="0dp"
+        android:text="activity C啊嘎嘎十多个哦啊及输卵管那算了的叫法是两个 " />
+
+    <TextView
+        android:id="@+id/txt_in_d"
+        android:layout_width="100dp"
+        android:layout_toRightOf="@+id/txt_in_c"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_in_b"
+        android:textSize="30dp"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="0dp"
+        android:text="啊嘎嘎" />
+
+    <TextView
+        android:id="@+id/txt_in_e"
+        android:layout_width="100dp"
+        android:layout_toRightOf="@+id/txt_in_c"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_in_d"
+        android:textSize="30dp"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="0dp"
+        android:text="啊嘎嘎" />
+
+    <TextView
+        android:id="@+id/txt_in_g"
+        android:layout_width="100dp"
+        android:layout_toRightOf="@+id/txt_in_c"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_in_e"
+        android:textSize="30dp"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="0dp"
+        android:text="啊嘎嘎" />
 </RelativeLayout>
