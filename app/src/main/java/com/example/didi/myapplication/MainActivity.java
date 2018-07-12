@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.iflytek.cloud.SynthesizerListener;
 import com.jakewharton.scalpel.ScalpelFrameLayout;
 
 import java.lang.reflect.Proxy;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -69,6 +71,10 @@ public class MainActivity extends AppCompatActivity{
 
         toast = Toast.makeText(this, "确定退出？", Toast.LENGTH_SHORT);
         new Abc().funcA();
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            Map<String, String> m = new ArrayMap<>();
+        }
 
         final TextView tv = (TextView) findViewById(R.id.test_tv);
         tv.setOnClickListener(new View.OnClickListener() {
